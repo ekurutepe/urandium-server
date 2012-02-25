@@ -66,7 +66,7 @@ app.get('/init', function(req, res, next) {
                 res.json({result: 'ok'});
             });
             query.on('error', function(error){
-                res.json({error: 'db error: ' + error);
+                res.json({error: 'db error: ' + error});
             })
             
 
