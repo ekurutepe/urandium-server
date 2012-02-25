@@ -104,14 +104,19 @@ app.post('/photo', function(req, res, next){
 });
 
 app.get('/photo', function(req, res, next){
+    
+    var result = '';
     client.get('.').on('response', function(res){
       console.log(res.statusCode);
       console.log(res.headers);
       res.setEncoding('utf8');
       res.on('data', function(chunk){
         console.log(chunk);
+        result += chunk;
       });
     }).end();
+    
+    res.json({result: result});
 });
 
 var port = process.env.PORT || 3000;
