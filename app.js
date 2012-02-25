@@ -56,15 +56,21 @@ app.get('/init', function(req, res, next) {
     pg.connect(process.env.DATABASE_URL, function(err, client) {
         if(err) {
             console.log(err)
+            
+            res.json({err: 'could not connect to db'});
         }
         else {
             var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'),, timestamp date, url varchar(255), lat real, lng real );");
 
-            query.on('row', function(row) {
-              console.log(JSON.stringify(row));
+            query.on('end', function(res) {
+                res.json({result: 'ok'});
             });
+            query.on('error', function(error){
+                res.json({error: 'db error: ' + error);
+            })
+            
 
-            res.json({result: 'ok'});
+
             
         }
     });
