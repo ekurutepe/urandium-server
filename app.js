@@ -108,16 +108,13 @@ app.post('/photo', function(req, res, next){
           , bucket: 'urandium'
         });
         
-        pg.connect(process.env.DATABASE_URL, function(err, client) {
-          var query = client.query('SELECT * FROM your_table');
 
-          query.on('row', function(row) {
-            console.log(JSON.stringify(row));
-          });
-        });
         
         
         var filename = '/images/' + type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
+        
+
+        
         var req = s3Client.put(filename, {
                             'Content-Length': buf.length,
                             'Content-Type': 'application/octet-stream' });
@@ -132,6 +129,28 @@ app.post('/photo', function(req, res, next){
         });
         // Send the request with the file's Buffer obj
         req.end(buf);
+        
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+            if(err) {
+                console.log(err)
+
+                res.json({err: 'could not connect to db'});
+            }
+            else {
+                var query = client.query("INSERT INTO photos (timestamp, url, lat, lng) VALUES (now(), "+filename+", "+ lat +", "+ lng +" );");
+
+                query.on('end', function(dbResult) {
+                    res.json({result: 'ok'});
+                });
+                query.on('error', function(error){
+                    res.json({error: 'db error: ' + JSON.stringify(error)});
+                })
+
+
+
+
+            }
+        });
         
         res.json({status:'ok'});
         
