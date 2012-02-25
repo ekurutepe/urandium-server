@@ -114,7 +114,7 @@ app.get('/photo', function(req, res, next){
     });
     
     var result = '';
-    client.get('.').on('response', function(res){
+    client.get('').on('response', function(res){
       console.log(res.statusCode);
       console.log(res.headers);
       res.setEncoding('utf8');
