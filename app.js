@@ -51,14 +51,22 @@ app.get('/', routes.index);
 
 app.get('/init', function(req, res, next) {
 
+    console.log(process.env.DATABASE_URL);
+    
     pg.connect(process.env.DATABASE_URL, function(err, client) {
-      var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'),, timestamp date, url varchar(255), lat real, lng real );");
+        if(err) {
+            console.log(err)
+        }
+        else {
+            var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'),, timestamp date, url varchar(255), lat real, lng real );");
 
-      query.on('row', function(row) {
-        console.log(JSON.stringify(row));
-      });
-      
-      res.json({result: 'ok'});
+            query.on('row', function(row) {
+              console.log(JSON.stringify(row));
+            });
+
+            res.json({result: 'ok'});
+            
+        }
     });
     
 });
