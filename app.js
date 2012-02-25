@@ -95,6 +95,8 @@ app.post('/photo', function(req, res, next){
         // Send the request with the file's Buffer obj
         req.end(buf);
         
+        res.json({status:'ok'});
+        
     }
     else {
         res.json({error:'no proper request', params: req.params, body: req.body});
