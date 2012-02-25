@@ -1,0 +1,12 @@
+development:
+  bucket: urandium
+  access_key_id: AKIAJUXN42YLFXA235ZQ
+  secret_access_key: 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
+test:
+  bucket: urandium
+  access_key_id: AKIAJUXN42YLFXA235ZQ
+  secret_access_key: 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
+production:
+  bucket: urandium
+  access_key_id: AKIAJUXN42YLFXA235ZQ
+  secret_access_key: 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
