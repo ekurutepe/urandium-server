@@ -114,7 +114,7 @@ app.get('/photo', function(req, res, next){
     });
     
     var result = '';
-    client.get('').on('response', function(res){
+    client.get('raw-1330186611130-99Gs7kTO.jpg').on('response', function(res){
       console.log(res.statusCode);
       console.log(res.headers);
       res.setEncoding('utf8');
