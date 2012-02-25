@@ -62,7 +62,7 @@ app.get('/init', function(req, res, next) {
         else {
             var query = client.query("CREATE TABLE photos ( pid SERIAL, timestamp DATE, url VARCHAR(255), lat REAL, lng REAL );");
 
-            query.on('end', function(res) {
+            query.on('end', function(dbResult) {
                 res.json({result: 'ok'});
             });
             query.on('error', function(error){
