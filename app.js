@@ -152,7 +152,6 @@ app.post('/photo', function(req, res, next){
             }
         });
         
-        res.json({status:'ok'});
         
     }
     else {
