@@ -80,7 +80,7 @@ app.post('/photo', function(req, res, next){
           , bucket: 'urandium'
         });
         
-        var filename = type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
+        var filename = '/images/' + type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
         var req = client.put(filename, {
                             'Content-Length': buf.length,
                             'Content-Type': 'application/octet-stream' });
@@ -114,7 +114,7 @@ app.get('/photo', function(req, res, next){
     });
     
     var result = '';
-    client.get('raw-1330186611130-99Gs7kTO.jpg').on('response', function(res){
+    client.get('images/').on('response', function(res){
       console.log(res.statusCode);
       console.log(res.headers);
       res.setEncoding('utf8');
