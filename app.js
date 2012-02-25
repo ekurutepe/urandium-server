@@ -60,7 +60,7 @@ app.get('/init', function(req, res, next) {
             res.json({err: 'could not connect to db'});
         }
         else {
-            var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'),, timestamp date, url varchar(255), lat real, lng real );");
+            var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'), timestamp date, url varchar(255), lat real, lng real );");
 
             query.on('end', function(res) {
                 res.json({result: 'ok'});
