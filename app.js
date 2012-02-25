@@ -17,6 +17,12 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
   });
 });
 
+var client = knox.createClient({
+    key: 'AKIAJUXN42YLFXA235ZQ'
+  , secret: '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'
+  , bucket: 'urandium'
+});
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -75,11 +81,7 @@ app.post('/photo', function(req, res, next){
     var imgData = req.body.imageData;
 
 
-    var client = knox.createClient({
-        key: 'AKIAJUXN42YLFXA235ZQ'
-      , secret: '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'
-      , bucket: 'urandium'
-    });
+
     
         
     if (imgData && (type === 'raw' || type === 'final')) {
@@ -109,6 +111,17 @@ app.post('/photo', function(req, res, next){
         res.json({error:'no proper request', params: req.params, body: req.body});
         
     }
+});
+
+app.get('/photo', function(req, res, next){
+    client.get('.').on('response', function(res){
+      console.log(res.statusCode);
+      console.log(res.headers);
+      res.setEncoding('utf8');
+      res.on('data', function(chunk){
+        console.log(chunk);
+      });
+    }).end();
 });
 
 var port = process.env.PORT || 3000;
