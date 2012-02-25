@@ -7,16 +7,6 @@ var express = require('express'),
     routes = require('./routes'),
     knox = require('knox');
 
-var pg = require('pg');
-
-pg.connect(process.env.DATABASE_URL, function(err, client) {
-  var query = client.query('SELECT * FROM your_table');
-
-  query.on('row', function(row) {
-    console.log(JSON.stringify(row));
-  });
-});
-
 var client = knox.createClient({
     key: 'AKIAJUXN42YLFXA235ZQ'
   , secret: 'ipWbVrA3nVz+23bN0vxGCTddIhgZWsoRko9wJJKn'
