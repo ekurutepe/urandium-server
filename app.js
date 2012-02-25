@@ -8,6 +8,7 @@ var express = require('express'),
     knox = require('knox');
 
 
+var pg = require('pg');
 
 var app = module.exports = express.createServer();
 
@@ -48,6 +49,19 @@ function randomString(length) {
 
 app.get('/', routes.index);
 
+app.get('/init', function(req, res, next) {
+
+    pg.connect(process.env.DATABASE_URL, function(err, client) {
+      var query = client.query("CREATE TABLE photos ( pid integer PRIMARY KEY DEFAULT nextval('serial'),, timestamp date, url varchar(255), lat real, lng real );");
+
+      query.on('row', function(row) {
+        console.log(JSON.stringify(row));
+      });
+      
+      res.json({result: 'ok'});
+    });
+    
+});
 
 app.post('/photo', function(req, res, next){
     
@@ -74,14 +88,23 @@ app.post('/photo', function(req, res, next){
         
         var buf = new Buffer(imgData, 'base64');
         
-        var client = knox.createClient({
+        var s3Client = knox.createClient({
             key: 'AKIAJUXN42YLFXA235ZQ'
           , secret: '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'
           , bucket: 'urandium'
         });
         
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+          var query = client.query('SELECT * FROM your_table');
+
+          query.on('row', function(row) {
+            console.log(JSON.stringify(row));
+          });
+        });
+        
+        
         var filename = '/images/' + type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
-        var req = client.put(filename, {
+        var req = s3Client.put(filename, {
                             'Content-Length': buf.length,
                             'Content-Type': 'application/octet-stream' });
                         
@@ -107,14 +130,14 @@ app.post('/photo', function(req, res, next){
 
 app.get('/photo', function(req, res, next){
     
-    var client = knox.createClient({
+    var s3Client = knox.createClient({
         key: 'AKIAJUXN42YLFXA235ZQ'
       , secret: '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'
       , bucket: 'urandium'
     });
     
     var result = '';
-    client.get('images').on('response', function(res){
+    s3Client.get('images').on('response', function(res){
       console.log(res.statusCode);
       console.log(res.headers);
       res.setEncoding('utf8');
