@@ -7,11 +7,7 @@ var express = require('express'),
     routes = require('./routes'),
     knox = require('knox');
 
-var client = knox.createClient({
-    key: 'AKIAJUXN42YLFXA235ZQ'
-  , secret: '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'
-  , bucket: 'urandium'
-});
+
 
 var app = module.exports = express.createServer();
 
@@ -78,6 +74,12 @@ app.post('/photo', function(req, res, next){
         
         var buf = new Buffer(imgData, 'base64');
         
+        var client = knox.createClient({
+            key: 'AKIAJUXN42YLFXA235ZQ'
+          , secret: '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'
+          , bucket: 'urandium'
+        });
+        
         var filename = type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
         var req = client.put(filename, {
                             'Content-Length': buf.length,
@@ -104,6 +106,12 @@ app.post('/photo', function(req, res, next){
 });
 
 app.get('/photo', function(req, res, next){
+    
+    var client = knox.createClient({
+        key: 'AKIAJUXN42YLFXA235ZQ'
+      , secret: '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'
+      , bucket: 'urandium'
+    });
     
     var result = '';
     client.get('.').on('response', function(res){
