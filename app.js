@@ -164,7 +164,9 @@ app.post('/photo', function(req, res, next){
         
         console.log('uploaded base64: ' + imgData);
         console.log('buf base64: ' + buf.toString('base64'));
-        console.log('content length: ' + buf.length);
+        console.log('uploaded length: ' + imgData.length);
+        console.log('buffered content length: ' + buf.toString('base64').length);
+        
         
         var s3Client = knox.createClient({
             key: 'AKIAJUXN42YLFXA235ZQ'
