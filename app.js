@@ -196,7 +196,7 @@ app.post('/photo', function(req, res, next){
                 res.json({err: 'could not connect to db'});
             }
             else {
-                var query = client.query("INSERT INTO photos (timestamp, url, lat, lng) VALUES (now(), '"+filename+"', "+ lat +", "+ lng +" );");
+                var query = client.query("INSERT INTO photos (timestamp, url, type, lat, lng) VALUES (now(), '"+filename+"', '"+ type + "', "+ lat +", "+ lng +" );");
 
                 query.on('end', function(dbResult) {
                     res.json({result: 'ok'});
