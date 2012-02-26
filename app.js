@@ -251,8 +251,9 @@ app.get('/photo', function(req, res, next){
                 var result = null;
                 s3Client.get(selectedPhoto.url).on('response', function(s3Response){
                   console.log(s3Response.statusCode);
-                  console.log(s3Response.headers);
-                  result = new Buffer(s3Response.headers['content-length']);
+                  console.log(s3Response.headers); 
+                  var contentLength = s3Response.headers['content-length'];
+                  result = new Buffer(contentLength);
                   var curOffset = 0;
                   s3Response.setEncoding('utf8');
                   s3Response.on('data', function(chunk){
@@ -261,10 +262,11 @@ app.get('/photo', function(req, res, next){
                     curOffset += chunk.length;
                     console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
                     
+                    if( curOffset == contentLength){
+                        res.json({result: result.toString('base64')});
+                    }
+                    
                   });
-                  s3Response.on('end', function(r){
-                    res.json({result: result.toString('base64')});
-                  })
                 }).end();
 
 
