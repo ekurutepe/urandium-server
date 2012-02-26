@@ -249,35 +249,45 @@ app.get('/photo', function(req, res, next){
                 console.log('selected photo: ' + JSON.stringify(selectedPhoto));
                 
                 res.json({url: 'https://s3-eu-west-1.amazonaws.com/urandium'+ selectedPhoto.url});
+
                 
-                // var s3Client = knox.createClient({
-                //     key: 'AKIAJUXN42YLFXA235ZQ'
-                //   , secret: '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'
-                //   , bucket: 'urandium'
-                // });
-                // 
-                // 
-                // var result = null;
-                // s3Client.get(selectedPhoto.url).on('response', function(s3Response){
-                //   console.log(s3Response.statusCode);
-                //   console.log(s3Response.headers); 
-                //   var contentLength = s3Response.headers['content-length'];
-                //   result = new Buffer(contentLength);
-                //   var curOffset = 0;
-                //   s3Response.setEncoding('utf8');
-                //   s3Response.on('data', function(chunk){
-                // 
-                //     result.write(chunk, curOffset);
-                //     curOffset += chunk.length;
-                //     console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
-                //     
-                //     if( curOffset == contentLength){
-                //         res.json({url: });
-                //     }
-                //     
-                //   });
-                // }).end();
-                // 
+            });
+            query.on('error', function(error){
+                res.json({error: 'db error: ' + JSON.stringify(error)});
+            })
+            
+
+
+            
+        }
+    });
+    
+    
+    
+});
+
+app.get('/stream', function(req, res, next){
+    
+    pg.connect(process.env.DATABASE_URL, function(err, client) {
+        if(err) {
+            console.log(err)
+            
+            res.json({err: 'could not connect to db'});
+        }
+        else {
+            var query = client.query("SELECT * FROM photos WHERE type = 'final';");
+            
+            var photos = [];
+
+            query.on('row', function(row){
+                photos.push({url: row.url});
+            })
+            query.on('end', function(dbResult) {
+                
+                
+                console.log('photo stream: ' + JSON.stringify(photos));
+                
+                res.json(photos);
 
                 
             });

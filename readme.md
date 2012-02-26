@@ -28,13 +28,13 @@ Parameters:
 
 returns: 
 
-HTTP 200 and the JPEG encoded image.
+HTTP 200 and the url to the image
 
 
 Obtaining the last N mixed photos for photo stream
 ---------------------------------------------------
 
-Endpoint: `GET /photo/stream`
+Endpoint: `GET /stream`
 
 Parameters:
 
