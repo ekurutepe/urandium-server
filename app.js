@@ -60,7 +60,8 @@ app.get('/init', function(req, res, next) {
             res.json({err: 'could not connect to db'});
         }
         else {
-            var query = client.query("CREATE TABLE photos ( pid SERIAL, timestamp DATE, url VARCHAR(255), lat REAL, lng REAL );");
+            
+            var query = client.query("CREATE TABLE photos ( pid SERIAL, timestamp TIMESTAMP, url VARCHAR(255), lat REAL, lng REAL );");
 
             query.on('end', function(dbResult) {
                 res.json({result: 'ok'});
@@ -77,6 +78,34 @@ app.get('/init', function(req, res, next) {
     
 });
 
+app.get('/drop', function(req, res, next) {
+
+    console.log(process.env.DATABASE_URL);
+    
+    pg.connect(process.env.DATABASE_URL, function(err, client) {
+        if(err) {
+            console.log(err)
+            
+            res.json({err: 'could not connect to db'});
+        }
+        else {
+            
+            var query = client.query("DROP TABLE photos;");
+
+            query.on('end', function(dbResult) {
+                res.json({result: 'ok'});
+            });
+            query.on('error', function(error){
+                res.json({error: 'db error: ' + JSON.stringify(error)});
+            })
+            
+
+
+            
+        }
+    });
+    
+});
 
 app.get('/list', function(req, res, next) {
     pg.connect(process.env.DATABASE_URL, function(err, client) {
