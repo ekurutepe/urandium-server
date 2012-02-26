@@ -16,21 +16,7 @@ var app = module.exports = express.createServer();
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
-  // app.register('.html', require('jade'));
-  //   app.set('view engine', 'jade');
-  
-  // disable layout
-  app.set("view options", {layout: false});
-
-  // make a custom html template
-  app.register('.html', {
-    compile: function(str, options){
-      return function(locals){
-        return str;
-      };
-    }
-  });
-  
+  app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -61,7 +47,13 @@ function randomString(length) {
     return str;
 }
 
-app.get('/', routes.index);
+// app.get('/', routes.index);
+
+app.get('/', function(req, res) {
+    fs.readFile(__dirname + '/public/index.html', 'utf8', function(err, text){
+        response.send(text);
+    });
+});
 
 app.get('/init', function(req, res, next) {
 
