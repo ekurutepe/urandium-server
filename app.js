@@ -134,7 +134,7 @@ app.get('/list', function(req, res, next) {
             
         }
     });
-})
+});
 
 app.post('/photo', function(req, res, next){
     
