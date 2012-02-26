@@ -21,3 +21,10 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
 margin: 1em 0 1em -79px;
 }
+
+.streamImage {
+    width: 25%;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0 10px 1em 0;
+}
