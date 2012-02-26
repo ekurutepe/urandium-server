@@ -50,7 +50,7 @@ function randomString(length) {
 // app.get('/', routes.index);
 
 app.get('/', function(req, res) {
-    fs.readFile(__dirname + '/public/index.html', 'utf8', function(err, text){
+    fs.readFile(__dirname + '/public/phudge-engin.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
