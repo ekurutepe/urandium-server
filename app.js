@@ -78,7 +78,7 @@ app.get('/init', function(req, res, next) {
 });
 
 
-app.get('/list' function(req, res, next){
+app.get('/list', function(req, res, next) {
     pg.connect(process.env.DATABASE_URL, function(err, client) {
         if(err) {
             console.log(err)
