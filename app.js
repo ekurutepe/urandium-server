@@ -221,24 +221,58 @@ app.post('/photo', function(req, res, next){
 
 app.get('/photo', function(req, res, next){
     
-    var s3Client = knox.createClient({
-        key: 'AKIAJUXN42YLFXA235ZQ'
-      , secret: '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'
-      , bucket: 'urandium'
+    pg.connect(process.env.DATABASE_URL, function(err, client) {
+        if(err) {
+            console.log(err)
+            
+            res.json({err: 'could not connect to db'});
+        }
+        else {
+            var query = client.query("SELECT * FROM photos WHERE type = 'raw';");
+            
+            var photos;
+
+            query.on('row', function(row){
+                photos.push(row);
+            })
+            query.on('end', function(dbResult) {
+                
+                var selectedPhoto = photos[Math.floor(Math.random() * photos.length)];
+                
+                console.log('selected photo: ' + JSON.stringify(selectedPhoto));
+                
+                var s3Client = knox.createClient({
+                    key: 'AKIAJUXN42YLFXA235ZQ'
+                  , secret: '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'
+                  , bucket: 'urandium'
+                });
+
+                var result = '';
+                s3Client.get(selectedPhoto.url).on('response', function(res){
+                  console.log(res.statusCode);
+                  console.log(res.headers);
+                  res.setEncoding('utf8');
+                  res.on('data', function(chunk){
+                    console.log(chunk);
+                    result += chunk;
+                  });
+                }).end();
+
+                res.json({result: result});
+                
+            });
+            query.on('error', function(error){
+                res.json({error: 'db error: ' + JSON.stringify(error)});
+            })
+            
+
+
+            
+        }
     });
     
-    var result = '';
-    s3Client.get('images').on('response', function(res){
-      console.log(res.statusCode);
-      console.log(res.headers);
-      res.setEncoding('utf8');
-      res.on('data', function(chunk){
-        console.log(chunk);
-        result += chunk;
-      });
-    }).end();
     
-    res.json({result: result});
+    
 });
 
 var port = process.env.PORT || 3000;
