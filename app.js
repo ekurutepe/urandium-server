@@ -136,6 +136,7 @@ app.get('/list', function(req, res, next) {
     });
 });
 
+var fs = require('fs');
 app.post('/photo', function(req, res, next){
     
     var type = req.body.type;
@@ -154,12 +155,14 @@ app.post('/photo', function(req, res, next){
     var imgData = req.body.imageData;
 
 
-
+    
     
         
     if (imgData && (type === 'raw' || type === 'final')) {
         
         var buf = new Buffer(imgData, 'base64');
+        
+        fs.writeFileSync('uploaded.jpg', buf);
         
         var s3Client = knox.createClient({
             key: 'AKIAJUXN42YLFXA235ZQ'
