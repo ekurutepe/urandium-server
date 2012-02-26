@@ -275,7 +275,7 @@ app.get('/stream', function(req, res, next){
             res.json({err: 'could not connect to db'});
         }
         else {
-            var query = client.query("SELECT * FROM photos WHERE type = 'raw' ORDER BY timestamp LIMIT 25;");
+            var query = client.query("SELECT * FROM photos WHERE type = 'final' ORDER BY timestamp DESC LIMIT 25;");
             
             var photos = [];
 
