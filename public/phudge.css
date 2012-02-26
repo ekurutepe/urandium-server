@@ -1,0 +1,23 @@
+/*
+ * Phudge
+ */
+
+body {
+  background: #d12424 !important;
+  
+  color: #000;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,0.15);
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #000;
+}
+
+.logoImg {
+  position:relative;
+  left: 50%;
+margin: 1em 0 1em -79px;
+}

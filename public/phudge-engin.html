@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <link href="phudge.css" rel="stylesheet">
+  <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<script src="assets/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+	
+	var refreshStream = function(){
+		var streamDiv = $('#stream');
+		console.log(streamDiv);
+		
+		streamDiv.children().remove();
+		
+		jQuery.get( 'http://furious-fog-6463.herokuapp.com/stream', function(data){
+			var imageCount = data.length;
+			
+			for (var i = 0; i < imageCount; i++) {
+				streamDiv.append('<img src="'+data[i].url+'">');
+			}
+		});
+	};
+	</script>	
+</head>
+<body id="test" onload="refreshStream()">
+  <div class="container">
+    <header class="jumbotron masthead">
+      <div class="inner">
+        <img class="logoImg" src="logo-mini.png" alt="getPhudge" />
+      </div>
+    </header>
+    <div class="row-fluid">
+      <div class="span6">
+      <p class="lead"><br>
+<br><br>
+Remember when you could mess up in the lab and get your photos double exposed?
+<br>
+<br>
+Now get your photos fudged up with the Phudge App.
+</p>
+      </div>
+      <div class="span6">
+        <p class="pull-right"><a href="#" class="btn btn-inverse btn-large">Download on pirate-bay.org</a></p>
+      </div>
+    </div><!-- /row-fluid -->
+    
+    <hr>
+    
+    <div class="row-fluid">
+      <div class="span4">
+        <p>
+<strong>	
+	✔ Jus' touch 'n' fudge
+	</strong>
+	<br>
+        	Phudge takes your photo and mashes it up with someone else's. 
+        </p>
+      </div>
+      <div class="span4">
+		<strong>	
+		✔ Live filter
+			</strong>
+					<br>
+        <p>Take control over our live filter by moving your phone from left to right. </p>
+      </div>
+      <div class="span4">
+        <p>		
+			<strong>	
+			✔ Share them
+				</strong>
+						<br>
+
+	Share your photos to your Twitter or Tumblr. </p>
+      </div>
+    </div><!-- /row-fluid -->
+    
+    <hr>
+
+<div class="span10" id="stream">
+	Here comes the stream
+<div>
+
+    <footer>
+      <div class="row-fluid">
+        <div class="span8">
+          <p></p>
+        </div>
+        <div class="span4">
+          <p><strong>Made by Team Phudge</strong> for Photo Hack Day Berlin</p>
+        </div>
+      </div><!-- /row-fluid -->
+    </footer>
+  </div>
+</body>
+</html>
