@@ -161,11 +161,11 @@ app.post('/photo', function(req, res, next){
     if (imgData && (type === 'raw' || type === 'final')) {
         
         var buf = new Buffer(imgData, 'base64');
-        
-        console.log('uploaded base64: ' + imgData);
-        console.log('buf base64: ' + buf.toString('base64'));
-        console.log('uploaded length: ' + imgData.length);
-        console.log('buffered content length: ' + buf.toString('base64').length);
+        // 
+        // console.log('uploaded base64: ' + imgData);
+        // console.log('buf base64: ' + buf.toString('base64'));
+        // console.log('uploaded length: ' + imgData.length);
+        // console.log('buffered content length: ' + buf.toString('base64').length);
         
         
         var s3Client = knox.createClient({
@@ -179,8 +179,8 @@ app.post('/photo', function(req, res, next){
         
         var filename = '/images/' + type + '-' + new Date().getTime() + '-' + randomString(8) + '.jpg';
         
-
-        
+        console.log('filename: ' + filename);
+                
         var req = s3Client.put(filename, {
                             'Content-Length': buf.length,
                             'Content-Type': 'application/octet-stream' });
