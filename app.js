@@ -247,18 +247,25 @@ app.get('/photo', function(req, res, next){
                   , bucket: 'urandium'
                 });
 
-                var result = '';
-                s3Client.get(selectedPhoto.url).on('response', function(res){
-                  console.log(res.statusCode);
-                  console.log(res.headers);
-                  res.setEncoding('utf8');
-                  res.on('data', function(chunk){
-                    console.log(chunk);
-                    result += chunk;
+                
+                var result = null;
+                s3Client.get(selectedPhoto.url).on('response', function(s3Response){
+                  console.log(s3Response.statusCode);
+                  console.log(s3Response.headers);
+                  var headers = JSON.parse(s3Response.headers);
+                  result = new Buffer(headers['content-length']);
+                  var curOffset = 0;
+                  s3Response.setEncoding('utf8');
+                  s3Response.on('data', function(chunk){
+
+                    result.write(chunk, curOffset);
+                    curOffset += chunk.length;
+                    console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
+                    
                   });
                 }).end();
 
-                res.json({result: result});
+                res.json({result: result.toString('base64')});
                 
             });
             query.on('error', function(error){
