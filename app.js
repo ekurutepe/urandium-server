@@ -230,7 +230,7 @@ app.get('/photo', function(req, res, next){
         else {
             var query = client.query("SELECT * FROM photos WHERE type = 'raw';");
             
-            var photos;
+            var photos = [];
 
             query.on('row', function(row){
                 photos.push(row);
