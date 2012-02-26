@@ -252,8 +252,7 @@ app.get('/photo', function(req, res, next){
                 s3Client.get(selectedPhoto.url).on('response', function(s3Response){
                   console.log(s3Response.statusCode);
                   console.log(s3Response.headers);
-                  var headers = JSON.parse(s3Response.headers);
-                  result = new Buffer(headers['content-length']);
+                  result = new Buffer(s3Response.headers['content-length']);
                   var curOffset = 0;
                   s3Response.setEncoding('utf8');
                   s3Response.on('data', function(chunk){
