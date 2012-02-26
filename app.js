@@ -152,7 +152,7 @@ app.post('/photo', function(req, res, next){
         
     }
     
-    var imgData = req.body.imageData.replace(' ', '+');
+    var imgData = req.body.imageData.replace(/ /g, '+');
 
 
     
