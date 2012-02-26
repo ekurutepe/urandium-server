@@ -263,9 +263,12 @@ app.get('/photo', function(req, res, next){
                     console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
                     
                   });
+                  s3Response.on('end', function(r){
+                    res.json({result: result.toString('base64')});
+                  })
                 }).end();
 
-                res.json({result: result.toString('base64')});
+
                 
             });
             query.on('error', function(error){
