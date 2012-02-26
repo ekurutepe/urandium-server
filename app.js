@@ -280,7 +280,7 @@ app.get('/stream', function(req, res, next){
             var photos = [];
 
             query.on('row', function(row){
-                photos.push({url: row.url});
+                photos.push({url: 'https://s3-eu-west-1.amazonaws.com/urandium'+ row.url});
             })
             query.on('end', function(dbResult) {
                 
