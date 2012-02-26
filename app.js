@@ -51,7 +51,7 @@ function randomString(length) {
 
 app.get('/', function(req, res) {
     fs.readFile(__dirname + '/public/index.html', 'utf8', function(err, text){
-        response.send(text);
+        res.send(text);
     });
 });
 
