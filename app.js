@@ -241,34 +241,36 @@ app.get('/photo', function(req, res, next){
                 
                 console.log('selected photo: ' + JSON.stringify(selectedPhoto));
                 
-                var s3Client = knox.createClient({
-                    key: 'AKIAJUXN42YLFXA235ZQ'
-                  , secret: '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'
-                  , bucket: 'urandium'
-                });
-
+                res.json({url: 'https://s3-eu-west-1.amazonaws.com/urandium'+ selectedPhoto.url});
                 
-                var result = null;
-                s3Client.get(selectedPhoto.url).on('response', function(s3Response){
-                  console.log(s3Response.statusCode);
-                  console.log(s3Response.headers); 
-                  var contentLength = s3Response.headers['content-length'];
-                  result = new Buffer(contentLength);
-                  var curOffset = 0;
-                  s3Response.setEncoding('utf8');
-                  s3Response.on('data', function(chunk){
-
-                    result.write(chunk, curOffset);
-                    curOffset += chunk.length;
-                    console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
-                    
-                    if( curOffset == contentLength){
-                        res.json({result: result.toString('base64')});
-                    }
-                    
-                  });
-                }).end();
-
+                // var s3Client = knox.createClient({
+                //     key: 'AKIAJUXN42YLFXA235ZQ'
+                //   , secret: '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'
+                //   , bucket: 'urandium'
+                // });
+                // 
+                // 
+                // var result = null;
+                // s3Client.get(selectedPhoto.url).on('response', function(s3Response){
+                //   console.log(s3Response.statusCode);
+                //   console.log(s3Response.headers); 
+                //   var contentLength = s3Response.headers['content-length'];
+                //   result = new Buffer(contentLength);
+                //   var curOffset = 0;
+                //   s3Response.setEncoding('utf8');
+                //   s3Response.on('data', function(chunk){
+                // 
+                //     result.write(chunk, curOffset);
+                //     curOffset += chunk.length;
+                //     console.log('chunk len: ' + chunk.length + ' curOffset: ' + curOffset);
+                //     
+                //     if( curOffset == contentLength){
+                //         res.json({url: });
+                //     }
+                //     
+                //   });
+                // }).end();
+                // 
 
                 
             });
