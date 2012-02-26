@@ -77,6 +77,36 @@ app.get('/init', function(req, res, next) {
     
 });
 
+
+app.get('/list' function(req, res, next){
+    pg.connect(process.env.DATABASE_URL, function(err, client) {
+        if(err) {
+            console.log(err)
+            
+            res.json({err: 'could not connect to db'});
+        }
+        else {
+            var query = client.query("SELECT * FROM photos;");
+            
+            var rows = '';
+
+            query.on('row', function(row){
+                rows += JSON.stringify(row) + '\n';
+            })
+            query.on('end', function(dbResult) {
+                res.json({result: rows});
+            });
+            query.on('error', function(error){
+                res.json({error: 'db error: ' + JSON.stringify(error)});
+            })
+            
+
+
+            
+        }
+    });
+})
+
 app.post('/photo', function(req, res, next){
     
     var type = req.body.type;
