@@ -19,7 +19,13 @@
 			var imageCount = data.length;
 			
 			for (var i = 0; i < imageCount; i++) {
-				streamDiv.append('<img class="streamImage streamImage'+i+'" src="'+data[i].url+'">');
+				var src = data[i].url;
+				
+				if (src.substring(0,1) != '/') {
+					src = '/'+src;
+				}
+				
+				streamDiv.append('<img class="streamImage streamImage'+i+'" src="'+src+'">');
 			}
 		});
 	};
